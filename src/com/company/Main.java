@@ -1,10 +1,11 @@
 package com.company;
 import java.util.Scanner;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 public class Main {
 
     static String name;
-    static String amount;
     static int balance = 200000;
     static int securityPin = 2089;
     static int pin;
@@ -12,8 +13,11 @@ public class Main {
     static int amtWithdraw;
     static int newBalance;
     static int confirm;
+    static int depoAmt;
 
     static Scanner scanner = new Scanner(System.in);
+    static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    static LocalDateTime now = LocalDateTime.now();
 
     static void welcome(){
         System.out.println("Hello, welcome to Gee Bank");
@@ -51,6 +55,8 @@ public class Main {
         System.out.println("Choose which action to perform");
         System.out.println("1. Check bank balance");
         System.out.println("2. Withdraw");
+        //System.out.println("3. Fund transfer");
+        System.out.println("3. Deposit");
         menu = scanner.nextInt();
         switch (menu){
             case 1:
@@ -59,6 +65,10 @@ public class Main {
 
             case 2:
                 withdraw();
+                break;
+
+            case 3:
+                deposit();
                 break;
 
             default:
@@ -82,7 +92,7 @@ public class Main {
             confirm = scanner.nextInt();
             switch (confirm){
                 case 1:
-                    success();
+                    withdrawalSuccess();
                     break;
 
                 case 2:
@@ -96,18 +106,50 @@ public class Main {
         System.out.println("=============Gee Bank=============");
         System.out.println("Name: "+name);
         System.out.println("Account number: 01937772410");
-        System.out.println("Amount available: "+balance);
+        System.out.println("Amount available: Ksh."+balance);
+        System.out.println("Date and time: "+dtf.format(now));
         System.out.println("===========Thank you for banking with us==========");
     }
 
-    static void success(){
+    static void deposit(){
+        System.out.println("How much would you like to deposit");
+        depoAmt = scanner.nextInt();
+        System.out.println("Confirm that you want to deposit Ksh."+depoAmt);
+        System.out.println("1. Yes");
+        System.out.println("2. No");
+        confirm = scanner.nextInt();
+        switch (confirm){
+            case 1:
+                depositSuccess();
+                break;
+
+            case 2:
+                System.out.println("Deposit cancelled");
+                menu();
+        }
+    }
+
+    static void withdrawalSuccess(){
         newBalance = balance - amtWithdraw;
 
         System.out.println("=============Gee Bank=============");
         System.out.println("Name: "+name);
         System.out.println("Account number: 01937772410");
-        System.out.println("Amount withdrawn: "+amtWithdraw);
-        System.out.println("Balance: "+newBalance);
+        System.out.println("Amount withdrawn: Ksh."+amtWithdraw);
+        System.out.println("Balance: Ksh."+newBalance);
+        System.out.println("Date and time: "+dtf.format(now));
+        System.out.println("===========Thank you for banking with us==========");
+    }
+
+    static void depositSuccess(){
+        newBalance = balance + depoAmt;
+
+        System.out.println("=============Gee Bank=============");
+        System.out.println("Name: "+name);
+        System.out.println("Account number: 01937772410");
+        System.out.println("Amount deposited: Ksh."+depoAmt);
+        System.out.println("Balance: Ksh."+newBalance);
+        System.out.println("Date and time: "+dtf.format(now));
         System.out.println("===========Thank you for banking with us==========");
     }
 
